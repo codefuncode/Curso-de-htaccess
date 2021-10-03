@@ -1,0 +1,26 @@
+p {
+	border: 1px solid black;
+	padding: 20px;
+	margin: 20px;
+}
+
+.uno {
+	width: 40%;
+}
+
+.dos {
+	width: 40%;
+}
+
+.uno, .dos, .tres {
+	float: left;
+}
+
+.tres {
+	width: 10%;
+}
+
+.cuatro {
+	float: left;
+	width: 40%;
+}
