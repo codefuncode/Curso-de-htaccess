@@ -21,3 +21,7 @@
 - [semicolonworld](https://www.semicolonworld.com/question/24730/htaccess-protect-download-private-files-from-user-39-s-directory-using-php)
 
 - [wikipedia](https://en.wikipedia.org/wiki/List_of_Apache_modules)
+
+- [jonmircha repositorio GitHub](https://github.com/jonmircha/kiss-php)
+
+- [php_mvc_starter fork ricardoalcocer](https://github.com/codefuncode/php_mvc_starter)
