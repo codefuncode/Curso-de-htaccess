@@ -1,0 +1,936 @@
+El software de servidor Apache, sobre el que funciona la mayoría de la Web, ofrece configuración de directorios a través de los archivos de Acceso a Hipertexto, Hypertext Access en inglés, más conocidos como archivos .htaccess para que te hagas una idea de donde viene el nombrecito del archivo.
+
+Estos archivos .htaccess permiten ajustes personalizados y específicos para cada sitio de directivas de configuración del sistema, definidas en el archivo de configuración principal de Apache (httpd.conf).
+
+Estas directivas personalizadas pueden operar dentro de un archivo denominado .htaccess. Para ello el usuario debe conceder al fichero .htaccess los permisos de archivo adecuados de acceso y/o edición. Ya puestos, a este respecto toma nota que jamás debes dar permisos de escritura para todos al archivo .htaccess, lo más habitual y seguro es conceder permisos 644, que permite acceso universal de lectura y permiso de escritura solo al usuario del sistema.
+
+También debes saber que las reglas – o directivas – de .htaccess afectan al directorio superior y todos los subdirectorios donde esté situado. Así que para que se apliquen sus configuraciones a toda una web debes colocar el archivo .htaccess en la carpeta raíz de sitio.
+
+Además, también puedes crear archivos .htaccess en un directorio o subdirectorio concreto para que sus reglas se apliquen solo al mismo.
+Notas importantes para novatos con .htaccess
+
+Al ser un archivo de configuración, .htaccess es realmente potente, y en consecuencia peligroso si no se usa bien. Hasta el más ligero error de sintaxis, como un espacio de sobra, puede provocar un funcionamiento desastroso en el servidor. Así que es importante que hagas siempre copia de cualquier archivo y carpeta relevante de tu web, incluidos los ficheros .htaccess originales, antes de meterte a enredar con archivos de Acceso a Hipertexto.
+
+También es importante comprobar que todo funciona bien en tu web después de hacer cualquier cambio en el fichero .htaccess, por pequeño o irrelevante que te parezca. Si encuentras algún error deshaz los cambios o recupera la copia guardada antes de hacerlos para así devolver tu web a su funcionamiento normal.
+Ojo con el rendimiento
+
+Las directivas de .htaccess ofrecen configuraciones de directorio sin necesidad de acceder al archivo principal de configuración de Apache (httpd.conf). Sin embargo, por cuestiones de rendimiento y seguridad, siempre que sea posible, se debe utilizar siempre el archivo principal de configuración para las directivas del servidor.
+
+Por ejemplo, cuando un servidor está configurado para procesar directivas de .htaccess, Apache debe buscar en cada directorio del dominio y cargar todos y cada uno de los archivos .htaccess en cada petición de documentos. Esto provoca un incremento en el tiempo de procesamiento de la página y, en consecuencia, perjudica el rendimiento.
+
+Para sitios con poco tráfico este tipo de fallos de rendimiento pueden ser inapreciables, pero se puede convertir en un serio problema en webs de alto tráfico.
+
+Así que, como regla de oro, solo debes usar archivos .htaccess cuando no tengas acceso al archivo de configuración principal del servidor, o sea, al archivo httpd.conf.
+Expresiones regulares (regex) disponibles en .htaccess
+
+htaccess
+
+#
+    Una #  le dice al servidor que ignore la línea, que no la ejecute. Se usa para incluir comentarios. Debes tener claro que cada línea de comentarios requiere su propio carácter # así que si quieres añadir mucho texto recuerda poner una # al principio de cada línea. Suele ser recomendable usar solo letras, números, guiones y guiones bajos, para evitar posibles errores de llamadas no deseadas al servidor.
+    Ejemplo:
+    # esto es un comentario
+    # cada línea debe tener su propia almohadilla
+    # utiliza solo caracteres alfanuméricos, guiones (-) o guiones bajos (_)
+
+[F]
+    Forbidden (prohibido): le dice al servidor que devuelva al cliente un 403 Forbidden.
+[L]
+    Last rule (última regla): le dice al servidor que deje de hacer rewrite una vez se procese la directiva anterior.
+[N]
+    Next (siguiente): le dice a Apache que vuelva a ejecutar el rewrite hasta que todas las directivas de rewrite se hayan ejecutado.
+[G]
+    Gone (ido): le dice al servidor que entregue el mensaje de estado Gone (no longer exists).
+[P]
+    Proxy: le dice al servidor que gestione las peticiones mediante mod_proxy
+[C]
+    Chain (cadena): le dice al servidor que encadene la regla actual con la anterior.
+[R]
+    Redirect (redirigir): le dice a Apache que lance una redirección, haciendo que el navegador muestre la URL re-escrita/modificada.
+[NC]
+    No Case: define cualquier argumento al que esté asociado como no afectado por mayúsculas-minúsculas, o sea, como case-insensitive, «NC» = «No Case».
+[PT]
+    Pass Through (pasar a través): le dice a mod_rewrite que pase la URL re-escrita de  nuevo a Apache para que la procese de nuevo.
+[OR]
+    Or (o): especifica una lógica «o» que enlaza dos expresiones para que si una u otra se cumple se aplique la regla asociada a la misma.
+[NE]
+    No Escape: le dice al servidor que redistribuya la salida sin escapar caracteres.
+[NS]
+    No Subrequest (sin petición subyacente): le dice al servidor que se salte la directiva si hay peticiones internas subyacentes.
+[QSA]
+    Append Query String: insta al servidor a que añada una cadena de petición al final de la expresión (URL).
+[S=x]
+    Skip (saltar): le dice al servidor que se salte las siguientes «x» reglas si encuentra alguna coincidencia..
+[E=variable:value]
+    Environmental Variable (variable del entorno): le dice al servidor que establezca la variable del entorno («variable») al valor definido («value»).
+[T=MIME-type]
+    Mime Type: declara el tipo mime del recurso al que está dirigido.
+[]
+    especifica una clase de carácter, por el que cualquier carácter dentro de los corchetes se considerará una coincidencia, por ejemplo en [xyz], con x, y o z.
+[]+
+    clase de carácter en el que cualquier combinación de elementos dentro de los corchetes se considera una coincidencia; por ejemplo [zyz]+ considerará una coincidencia cualquier número de equis, y griegas o zetas, o cualquier combinación de estos caracteres.
+[^]
+    especifica que no está dentro de una clase de carácter; por ejemplo, [^xyz] considerará una coincidencia cualquier carácter que no sea ni x, ni y, ni z.
+[a-z]
+    un guión (-)  entre dos caracteres dentro de corchetes ([]) define un rango de caracteres; por ejemplo [a-zA-Z] se refiere a todas las letras en mayúsculas y minúsculas de la a a la z.
+a{n}
+    especifica un número exacto (n) del carácter precedente; por ejemplo x{3} se refiere exactamente a tres x.
+a{n,}
+    especifica un número no o más del carácter precedente; por ejemplo x{3,} se refiere a tres x o más.
+a{n,m}
+    especifica un rango de números, entre n y m, del carácter precedente; por ejemplo x{3,7} se refiere a tres, cuatro, cinco, seis o siete x.
+()
+    se utiliza para agrupar juntos un grupo de caracteres, considerándolos como una sola unidad; por ejemplo (ayuda)?wordpress se referirá a wordpress, ya sea con o sin el prefijo ayuda.
+^
+    indica el comienzo de una cadena de prueba de una expresión regular (regex); por ejemplo, empezar el argumento con el carácter anterior.
+$
+    indica el fin de una cadena de prueba de una expresión regular; por ejemplo, terminar el argumento con el carácter anterior.
+?
+    declara opcional el carácter precedente; por ejemplo cachopo? valdrá para cachopo y cachopos, mientras que cachopo(s)? se referirá tanto a cachopo como a cachopos; por ejemplo x? se refiere a ninguna o una x.
+!
+    declara negación; ejemplo “!cadena” valdrá para todo menos para “cadena”.
+.
+    un punto (o periodo) indica cualquier carácter arbitrario simple.
+-
+    indica que “no se” haga rewrite de la URL, como en “...dominio.es.* - [F]”.
++
+    se refiere a uno o más caracteres del carácter precedente; por ejemplo, G+ se refiere a una o más Gs, mientras que simplemente «+» vale para uno o varios caracteres de cualquier tipo.
+*
+    se refiere a cero o más de los caracteres precedentes; por ejemplo, puedes usar  “.*” como comodín.
+|
+    declara un operador lógico “or”; por ejemplo, (x|y) vale para x o y.
+\
+    escapa caracteres especiales ( ^ $ ! . * | ); por ejemplo, usa “\.” para indicar/escapar un punto literalmente.
+\.
+    indica  un punto literal (escapado).
+/*
+    cero o más barras.
+.*
+    cero o más caracteres arbitrarios.
+^$
+    define una cadena vacía.
+^.*$
+    el patrón estándar para que valga cualquier cadena.
+[^/.]
+    define un carácter que no es ni una barra ni un punto.
+[^/.]+
+    define cualquiera números o caracteres que no contengan ni barra ni punto.
+http://
+    esta es una declaración literal — en este caso la cadena de caracteres literal “http://”.
+^domain.*
+    define una cadena que comienza con el término “domain”, probablemente precedido por cualquier número de caracteres.
+^domain\.com$
+    define la cadena exacta “domain.com”.
+-d
+    comprueba si la cadena es un directorio existente.
+-f
+    comprueba si la cadena es un archivo existente.
+-s
+    comprueba si el archivo de la cadena contiene un valor que no sea cero.
+
+Códigos de redirección de cabecera
+
+    301 – movido permanentemente
+    302 – movido temporalmente
+    403 – prohibido
+    404 – no encontrado
+    410 – ido
+
+Directivas básicas de .htaccess
+Activar el rewrite básico
+
+Hay servidores que no tiene el  “mod_rewrite” activo por defecto. Para que esté activo mod_rewrite (rewrite básico) en tu sitio añade la siguiente línea una vez en el archivo .htaccess de la carpeta raíz de tu web:
+
+# activar rewrite básico
+RewriteEngine on
+Activar enlaces simbólicos
+
+Activa los enlaces simbólicos (symlinks) añadiendo la siguiente directiva en el archivo .htaccess en el que los quieras tener disponibles. Ten en cuenta que para que funcione la directiva FollowSymLinks deben estar activados los privilegios AllowOverride Options en el archivo de configuración del servidor:
+
+# activar enlaces simbólicos
+Options +FollowSymLinks
+Activar AllowOverride
+
+Para que funcionen las directivas que requieren  AllowOverride, como FollowSymLinks, debe añadirse la siguiente directiva al archivo de configuración del servidor. Por cuestiones de rendimiento es importante activar AllowOverride solamente en el directorio o directorios concretos en los que sea necesaria. En el siguiente ejemplo de código se activan privilegios de  AllowOverride solo en un directorio concreto (/www/remplaza/esto/con/el/directorio/real). :
+
+# activa privilegios de allowoverride
+<Directory /www/remplaza/esto/con/el/directorio/real>
+AllowOverride Options
+</Directory>
+Renombrar el archivo .htaccess
+
+No todos los sistemas permiten el formato de solo extensión de los archivos .htaccess. Afortunadamente puedes renombrarlo a lo que quieras, mientras el nombre sea válido en tu sistema. Esta directiva debe colocarse en el archivo de configuración del servidor o no funcionará:
+
+# renombrar los archivos
+AccessFileName ht.access
+
+Nota: Si renombras los archivos .htaccess recuerda que debes actualizar cualquier ajuste asociado a los nombres previos. Por ejemplo, si estás protegiendo tu archivo .htaccess con FilesMatch, recuerda informarle de los nuevos nombres:
+
+# proteger archivos htaccess renombrados
+<FilesMatch "^ht\.">
+Order deny,allow
+Deny from all
+</FilesMatch>
+Aprovecha las reglas definidas en httpd.conf
+
+Puedes ahorrar tiempo, esfuerzo, y sobre todo recursos, definiendo reglas repetidas para varios alojamientos virtuales o solo para uno a través del archivo httpd.conf. Luego solo tienes que indicar a los archivos .htaccess afectados que hereden las reglas de httpd.conf incluyendo esta directiva:
+
+RewriteOptions Inherit
+Mejora el rendimiento de tu web con .htaccess
+
+acelerar web
+
+Uno de los usos más habituales, y agradecidos, de las directivas de .htaccess es el de mejorar el rendimiento de una web, así que vamos a empezar por ahí.
+Mejora el rendimiento con AllowOverride
+
+Recuerda antes de nada que puedes limitar bajadas de rendimiento activando  AllowOverride solo en los directorios en los que sea necesaria. Un ejemplo que verás muy claro es que si activas AllowOverride en todo tu sitio el servidor debe revisar cada directorio, buscando archivos .htaccess que puede que ni existan. Para evitarlo debemos desactivar AllowOverride en el fichero .htaccess de la carpeta raíz del sitio y luego activarlo solo en los directorios donde sea necesaria desde el archivo de configuración del servidor. Si no tuvieses acceso a este archivo de configuración del servidor y necesitas privilegios de AllowOverride no uses esta directiva:
+
+# mejorar rendimiento desactivando allow override
+AllowOverride None
+Indicando el conjunto de caracteres
+
+Podemos evitar errores 500 indicando el parámetro del conjunto de caracteres por defecto antes de cargarlos. Por supuesto, remplaza el «utf-8» del ejemplo si usas otro conjunto de caracteres en tu web:
+
+# indicamos el conjunto de caracteres por defecto
+AddDefaultCharset utf-8
+Ahorrando ancho de banda
+
+Para aumentar el rendimiento en servidores con PHP activo (o sea, todos en los que tengas un WordPress) añade la siguiente directiva:
+
+# ahorra ancho de banda en servidores con PHP activo
+<ifmodule mod_php4.c>
+php_value zlib.output_compression 16386
+</ifmodule>
+Desactivando la firma del servidor
+
+En esta ocasión desactivamos la firma del servidor que podría identificarlo:
+
+# desactiva la firma del servidor
+ServerSignature Off
+Estableciendo la zona horaria del servidor
+
+Con esta directiva le indicamos al servidor que se sincronice cronológicamente de acuerdo a la zona horaria de la localización que le indicamos:
+
+# establecemos la zona horaria del servidor
+SetEnv TZ Spain/Madrid
+Estableciendo la dirección de email del administrador del servidor
+
+Aquí especificamos al dirección de correo por defecto del administrador del servidor:
+
+# establecemos el email del administrador del servidor
+SetEnv SERVER_ADMIN admin@dominio.es
+Mejora la velocidad de transferencia activando la cache de archivos
+
+Podemos mejorar enormemente la velocidad de transferencia de nuestro sitio activando la cache de archivos. Usaremos el tiempo en segundos para indicar la duración del contenido en cache:
+
+# cache de imágenes y contenido flash un mes
+<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf)$">
+Header set Cache-Control "max-age=2592000"
+</FilesMatch>
+
+# cache de texto, css, y archivos javascript una semana
+<FilesMatch ".(js|css|pdf|txt)$">
+Header set Cache-Control "max-age=604800"
+</FilesMatch>
+
+# cache de archivos html htm un día
+<FilesMatch ".(html|htm)$">
+Header set Cache-Control "max-age=43200"
+</FilesMatch>
+
+# usamos esto para activar cache mínima durante tareas de desarrollo en el sitio
+<FilesMatch "\.(flv|gif|jpg|jpeg|png|ico|js|css|pdf|swf|html|htm|txt)$">
+Header set Cache-Control "max-age=5"
+</FilesMatch>
+
+# desactivamos la cache para scripts y archivos dinámicos concretos
+<FilesMatch "\.(pl|php|cgi|spl|scgi|fcgi)$">
+Header unset Cache-Control
+</FilesMatch>
+
+# método alternativo para cache de archivos
+ExpiresActive On
+ExpiresDefault A604800 # 1 week
+ExpiresByType image/x-icon A2419200 # 1 month
+ExpiresByType application/x-javascript A2419200 # 1 month
+ExpiresByType text/css A2419200 # 1 month
+ExpiresByType text/html A300 # 5 minutes
+# disable caching for scripts and other dynamic files
+<FilesMatch "\.(pl|php|cgi|spl|scgi|fcgi)$">
+ExpiresActive Off
+</FilesMatch>
+
+Conversión de intervalos comunes de tiempo en segundos:
+
+    300 = 5 minutos
+    2700 = 45 minutos
+    3600 = 1 hora
+    54000 = 15 horas
+    86400 = 1 día
+    518400 = 6 días
+    604800 = 1 semana
+    1814400 = 3 semanas
+    2419200 = 1 mes
+    26611200 = 11 meses
+    29030400 = 1 año = no expira nunca
+
+Estableciendo el idioma por defecto
+
+Este es un modo sencillo de establecer el idioma por defecto para las páginas que sirvas en tu alojamiento:
+
+# establece el idioma por defecto
+DefaultLanguage es-ES
+Declarando tipos MIME específicos/adicionales
+
+# añade varios tipos mime
+AddType application/x-shockwave-flash .swf
+AddType video/x-flv .flv
+AddType image/x-icon .ico
+Enviando el conjunto de caracteres y otras cabeceras sin meta tags
+
+# envía la tag de idioma y juego de caracteres por defecto
+# AddType 'text/html; charset=UTF-8' html
+AddDefaultCharset UTF-8
+DefaultLanguage es-ES
+Limitando métodos de petición GET y PUT al servidor
+
+# limita métodos GET y PUT de peticiones al servidor
+Options -ExecCGI -Indexes -All
+RewriteEngine on
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK|OPTIONS|HEAD) RewriteRule .* - [F]
+Procesando archivos selectivamente según el método de petición
+
+# procesar archivos según el método de petición al servidor
+Script PUT /cgi-bin/upload.cgi
+Script GET /cgi-bin/download.cgi
+Ejecutando varios tipos de archivo mediante un script cgi
+
+En aquellas situaciones especiales en las que necesitemos procesar varios tipos de archivo con algún script cgi específico mejor definirlo:
+
+# ejecutar todos los archivos png mediante png-script.cgi
+Action image/png /cgi-bin/png-script.cgi
+Mejora la seguridad de tu web con .htaccess
+seguridad web
+
+Otro de los usos más comunes de .htaccess es para aumentar la seguridad de una web, y disponemos de un buen montón de trucos para lograrlo.
+Evita acceso a .htaccess
+
+Añade el código siguiente a tu fichero .htaccess para añadir una capa extra de seguridad. Lo que consigue es que cualquier intento de acceso al fichero .htaccess resulte en un mensaje de error 403. No olvides, no obstante, que nuestra primera capa de defensa es proteger los archivos .htaccess cambiando los permisos a 644 con CHMOD, como hemos visto antes.:
+
+# asegurando el archivo htaccess
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+Evita el acceso a un archivo concreto
+
+Podemos aplicar la misma directiva a cualquier otro archivo que queramos proteger, como el fichero «contabilidad.pdf» del ejemplo siguiente:
+
+# evitar la visualizlación de un archivo concreto
+<files contabilidad.pdf>
+order allow,deny
+deny from all
+</files>
+Evita el acceso a varios archivos
+
+Para evitar el acceso a varios tipos de archivo añade el siguiente código y modifica la lista de tipos de archivo entre barras verticales para que se adapte a tus necesidades:
+
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+Evita la navegación de directorios no autorizada
+
+Podemos evitar la navegación por los directorios indicando al servidor que devuelva un mensaje de «Prohibido – Se requiere autorización» a cualquier intento de ver un directorio. Esto sucede cuando en algún directorio no hay una página de índice (index.html o index.php), y si no añades algún control de seguridad cualquier visitante podría ver el contenido de ese directorio desde  su navegador. Para evitarlo solo tienes que añadir la siguiente regla:
+
+# desactivar la navegación de directorios
+Options All -Indexes
+
+Por el contrario, si quieres permitir este tipo de navegación, usa la siguiente directiva:
+
+# activar la navegación de directorios
+Options All +Indexes
+
+Otro modo de evitar que el servidor muestre los directorios es con la siguiente directiva:
+
+# evitar el listado de carpetas
+IndexIgnore *
+
+Y, para finalizar, puedes usar la directiva IndexIgnore para evitar que se muestren ciertos tipos de archivo:
+
+# evitar que se muestren ciertos tipos de archivo
+IndexIgnore *.wmv *.mp4 *.avi *.etc
+Cambia la página índice por defecto
+
+Esta regla le dice al servidor que busque y muestre “tienda.html” como el índice por defecto del directorio. Debe estar en el fichero .htaccess del directorio en el que quieras remplazar el fichero índice por defecto, por ejemplo «index.html»:
+
+# sirve una página índice alternativa a la por defecto
+DirectoryIndex tienda.html
+
+Con la siguiente regla vamos un paso más allá y le decimos al servidor que revise los archivos del directorio raíz y muestre la primera que se encuentre en la lista (de izquierda a derecha), si no existe la siguiente y así sucesivamente:
+
+# sirve el primer fichero disponible de la lista como índice por defecto
+DirectoryIndex tienda.html index.php index.html default.htm
+Oculta extensiones de script
+
+Otra manera de mejorar la seguridad es ocultar los lenguajes script remplazando las extensiones reales de los scripts con extensiones de pega a tu elección. Por ejemplo, cambiando la extensión  “.foo” a “.php”:
+
+# sirve archivos foo como archivos php
+AddType application/x-httpd-php .foo
+
+# sirve archivos foo como archivos cgi
+AddType application/x-httpd-cgi .foo
+Limita acceso a la Red de Área Local (LAN)
+
+# limita el acceso a la red de área local
+<Limit GET POST PUT>
+order deny,allow
+deny from all
+allow from 192.168.0.0/33
+</Limit>
+Asegura directorios por dirección IP y/o dominio
+
+En este ejemplo todas las direcciones IP tienen permitido el acceso excepto 16.654.98.123 y el dominio «dominio.es»:
+
+# permitir a todas excepto a las indicadas
+<Limit GET POST PUT>
+order allow,deny
+allow from all
+deny from 16.654.98.123
+deny from .*dominio\.es.*
+</Limit>
+
+En este otro ejemplo se deniega acceso a todas las direcciones IP excepto a la 16.654.98.123 y al dominio «dominio.es» :
+
+# denegar acceso a todas excepto a las indicadas
+<Limit GET POST PUT>
+order deny,allow
+deny from all
+allow from 16.654.98.123
+allow from .*dominio\.es.*
+</Limit>
+
+A continuación vamos un poco más allá y bloqueamos visitantes indeseables basándonos en el dominio de referencia. También puedes ahorrar ancho de banda bloqueando tipos de archivo específicos como vimos antes de los dominios de referencia. Simplemente cambia los nombres de dominio del ejemplo por tus odiados favoritos::
+
+# bloquea visitantes desde los siguientes dominios
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} robaperas\.info [NC,OR]
+RewriteCond %{HTTP_REFERER} pagafantas\.net [NC,OR]
+RewriteRule .* - [F]
+</ifModule>
+Impide o permite acceso al dominio a un rango de direcciones IP
+
+Hay varias maneras efectivas de bloquear un rango de direcciones IP mediante .htaccess y vamos a ver varias. El primero que tenemos bloquea un rango de IPs especificado por su número CIDR (Classless Inter-Domain Routing). Este método es muy útil para bloquear super spammers como RIPE, Optinet y similares. Si, por ejemplo, te das cuenta de que estás añadiendo un montón de líneas de directivas Apache deny para direcciones que empiezan con los mismos números, elige una de ellas y haz un whois. Bajo el listado de resultados del whois encontrarás el valor CIDR que representa a cada dirección IP asociada a esa red en particular. Así que bloquear mediante el CIDR es un modo muy efectivo de evitar que un montón de IPs del mismo atacante intenten acceder a tu web. Aquí tienes un ejemplo muy genérico de bloqueo por CIDR, cambia los números a los que quieras bloquear:
+
+# bloquear rango de IPs por número CIDR
+<Limit GET POST PUT>
+order allow,deny
+allow from all
+deny from 10.1.0.0/16
+deny from 80.0.0/8
+</Limit>
+
+La situación contraria sería permitir el acceso a una IP por número CIDR:
+
+# permitir un rango IP por número CIDR
+<Limit GET POST PUT>
+order deny,allow
+deny from all
+allow from 10.1.0.0/16
+allow from 80.0.0/8
+</Limit>
+
+Otra manera eficaz de bloquear un rango completo de direcciones IP requiere truncar dígitos hasta que aparezca el rango buscado. Como una dirección IP se lee de izquierda a derecha su valor representa una dirección específica. Por ejemplo, una dirección IP 99.88.77.66 se refiere a una dirección IP específica y única. Ahora bien, si quitamos los dos últimos dígitos (66) de la dirección se referirá a cualquier dirección IP que empiece con el resto de números, o sea, que 99.88.77 vale para 99.88.77.1, 99.88.77.2, … 99.88.77.99, …y así sucesivamente.
+
+Y si seguimos con el mismo sistema, quitando otro par de dígitos de la dirección, su rango se amplía para referirse a cualquier dirección IP que empiece con 99.88.xx.xx, así que bloquearías 65.536 direcciones IP (256*256). Siguiendo esta lógica es posible bloquear todo un rango de direcciones IP a distintos grados de necesidad. El siguiente ejemplo es una muestra de lo que estamos hablando:
+
+# bloquear un rango de IP por truncado de números
+<Limit GET POST PUT>
+order allow,deny
+allow from all
+deny from 99.88.77.66
+deny from 99.88.77.*
+deny from 99.88.*.*
+deny from 99.*.*.*
+</Limit>
+
+Y para hacerlo al contrario, también podemos dar permisos a rangos de IPs usando el mismo sistema:
+
+# permitir a un rango de IP por truncado de números
+<Limit GET POST PUT>
+order deny,allow
+deny from all
+allow from 99.88.77.66
+allow from 99.88.77.*
+allow from 99.88.*.*
+allow from 99.*.*.*
+</Limit>
+Bloquea o permite acceso a múltiples direcciones IP en una sola línea
+
+Podemos ahorrar algo de espacio bloqueando rangos de direcciones IP en una sola línea:
+
+# bloqueo de dos direcciones IP concretas
+deny from 99.88.77.66 11.22.33.44
+# bloqueo de tres direcciones IP concretas
+deny from 99.88 99.88.77 11.22.33
+
+Y, de igual modo, podemos permitir acceso a varias IPs en una sola línea con el mismo truco:
+
+# permiso de acceso a dos direcciones IP concretas
+allow from 99.88.77.66 11.22.33.44
+# permiso de acceso a tres direcciones IP concretas
+allow from 99.88 99.88.77 11.22.33
+Más reglas para bloquear y permitir acceso a direcciones IP
+
+Otras posibles reglas para bloquear diversos tipos de direcciones IP serían las siguientes. Estas reglas se pueden adaptar igualmente para dar permiso a valores concretos de IPs simplemente cambiando la directiva  deny por allow:
+
+# bloquear un dominio parcial a través de valores de red o máscara de red
+deny from 99.1.0.0/255.255.0.0
+
+# bloquear un solo dominio
+deny from 99.88.77.66
+
+# bloquear dominio.es pero permitir a sub.dominio.es
+order deny,allow
+deny from dominio.es
+allow from sub.dominio.es
+Para el «hotlinking» y servir contenido alternativo
+
+Ya hemos hablado varias veces del hotlinking, esa  plaga de roba webs que rulan por Internet. Si quieres que se muestre un contenido distinto en aquellos sitios que te roban tus publicaciones copiando y pegando directamente o desde agregadores RSS puedes usar el siguiente código. Por supuesto cambia las rutas y nombres de archivo del ejemplo por los tuyos. Ten en cuenta también que este método bloquea todos los servicios RSS, como Feedburner o Feedly. Si quieres un método más refinado usa el de este enlace:
+
+# parar el hotlinking y mostrar contenido alternativo
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http://(www\.)?dominio\.es/.*$ [NC]
+RewriteRule .*\.(gif|jpg)$ [R,NC,L]
+</ifModule>
+
+Si quieres mostrar una página de error en vez de una imagen desagradable, remplaza la línea que contiene la RewriteRule del código anterior por la siguiente línea:
+
+# servir una página stander de 403 prohibido
+RewriteRule .*\.(gif|jpg)$ - [F,L]
+
+Si, por el contrario, quieres permitir que algún servicio o sitio concreto que no sea el tuyo pueda mostrar tus imágenes añade el siguiente código después de la línea que contiene la cadena «dominio.es» del ejemplo anterior:
+
+# permitir hotlinking del siguiente sitio
+RewriteCond %{HTTP_REFERER} !^http://(www\.)?webamiga\.es/.*$ [NC]
+Bloquea robots maliciosos, extractores de webs y navegadores offline
+
+A continuación veremos unas reglas muy útiles para evitar que nos inyecten código. Todos los agentes que pongamos en la lista tendrán acceso denegado y recibirán un mensaje de error. Hay muy buenas listas por ahí, así que no te quedes en el ejemplo. Y, por favor, NO incluyas el “[OR]” en la última directiva RewriteCond o tu servidor se caerá mostrando múltiples errores 500 en todas las páginas:
+
+# denegar acceso a robots maliciosos, extractores de webs y navegadores offline
+RewriteBase /
+RewriteCond %{HTTP_USER_AGENT} ^Anarchie [OR]
+RewriteCond %{HTTP_USER_AGENT} ^ASPSeek [OR]
+RewriteCond %{HTTP_USER_AGENT} ^attach [OR]
+RewriteCond %{HTTP_USER_AGENT} ^autoemailspider [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Xaldon\ WebSpider [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Xenu [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Zeus.*Webster [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Zeus
+RewriteRule ^.* - [F,L]
+
+También puedes mostrar un mensaje de error más amistoso enviando a tus molestos amigos a un sitio a tu elección simplemente remplazando la directiva RewriteRule de la última línea del código anterior con alguno de los siguientes ejemplos:
+
+# los mandamos a un sitio cachondo a nuestra elección
+RewriteRule ^.*$ http://www.disney.com [R,L]
+
+También, siendo algo más malo, puedes mandarles a un agujero negro virtual o a una dirección de email falsa:
+
+# los mandamos a un agujero negro virtual o a una dirección de email falsa
+RewriteRule ^.*$ [R,L]
+
+Puedes también incluir sitios de referencia específicos a tu lista negra usando HTTP_REFERER:
+
+RewriteCond %{HTTP_REFERER} ^http://www.dominiomalo.org$
+RewriteRule !^http://[^/.]\.tudominio\.es.* - [F,L]
+Otros divertidos trucos de bloqueo
+
+Aunque las siguientes técnicas de redirección están pensadas para bloquear y redirigir a sitios indeseables también puedes usarse para redirecciones más amables y útiles:
+
+# redirigir cualquier petición de lo que sea de un sitio spam a otro
+RewriteCond %{HTTP_REFERER} ^http://.*sitiospam.*$ [NC]
+RewriteRule .* [R]
+
+# redirigir todas las peticiones de un sitio a la imagen de otro sitio de spam
+RewriteCond %{HTTP_REFERER} ^http://.*sitiospam.*$ [NC]
+RewriteRule .* [R]
+
+# redirigir tráfico de una dirección o rango a otro sitio
+RewriteCond %{REMOTE_ADDR} 192.168.10.*
+RewriteRule .* [R]
+Aún más trucos para bloquear escoria
+
+Lo que sigue es una serie de códigos paso a paso que te ayudarán a bloquear todo tipo de entidades. No van por separado sino combinados entre ellos así que observa lo que hacen y adáptalos a tus necesidades::
+
+# establecemos variables para agentes de usuario, referencias y direcciones IP
+SetEnvIfNoCase User-Agent ".*(user-agent-you-want-to-block|php/perl).*" BlockedAgent
+SetEnvIfNoCase Referer ".*(block-this-referrer|and-this-referrer|and-this-referrer).*" BlockedReferer
+SetEnvIfNoCase REMOTE_ADDR ".*(666.666.66.0|22.22.22.222|999.999.99.999).*" BlockedAddress
+
+# establecemos la variable para clacker red clase B que provenga de  una red a bloquear determinada
+SetEnvIfNoCase REMOTE_ADDR "66.154.*" BlockedAddress
+
+# establecemos la variable para dos redes clase B concretas de ejemplo 198.25.0.0 y 198.26.0.0
+SetEnvIfNoCase REMOTE_ADDR "198.2(5|6)\..*" BlockedAddress
+
+# denegamos acceso a cualquiera que se ajuste a los anteriores códigos y les enviamos un mensaje 403
+<Limit GET POST PUT>
+order deny,allow
+deny from env=BlockedAgent
+deny from env=BlockedReferer
+deny from env=BlockedAddress
+allow from all
+</Limit>
+Protege con contraseña archivos, directorios y más…
+
+Un modo exhaustivo de asegurar un sitio es usar autenticación mediante usuario y contraseña, pudiendo proteger archivos concretos, varios archivos, directorios o incluso protegerse de cualquier IP excepto de la especificada. Hay un paso previo y es la creación del fichero .htpasswd, que  puedes generar aquí. Adapta los siguientes códigos a tus especificaciones:
+
+# proteger con contraseña un archivo
+<Files secure.php>
+AuthType Basic
+AuthName "Aviso"
+AuthUserFile /home/ruta/.htpasswd
+Require valid-user
+</Files>
+
+# proteger con contraseña varios archivos
+<FilesMatch "^(execute|index|secure|insanity|biscuit)*$">
+AuthType basic
+AuthName "Desarrollador"
+AuthUserFile /home/ruta/.htpasswd
+Require valid-user
+</FilesMatch>
+
+# proteger con contraseña el directorio en el que está alojado el htaccess
+AuthType basic
+AuthName "Este directorio está protegido"
+AuthUserFile /home/ruta/.htpasswd
+AuthGroupFile /dev/null
+Require valid-user
+
+# proteger con contraseña el directorio para cada IP excepto la especificada
+# crea un fichero htaccess en cada directorio para protegerlo
+AuthType Basic
+AuthName "Personal"
+AuthUserFile /home/ruta/.htpasswd
+Require valid-user
+Allow from 99.88.77.66
+Satisfy Any
+
+Nota: la mayoría de proveedores de alojamiento actuales ofrecen la protección de carpetas y archivos mediante contraseña desde su panel de control, evitando la necesidad de crear y modificar ficheros manualmente.
+Requerir SSL (Secure Sockets Layer)
+
+Lo siguiente es un método excelente para requerir SSL:
+
+# requerir SSL
+SSLOptions +StrictRequire
+SSLRequireSSL
+SSLRequire %{HTTP_HOST} eq "dominio.es"
+ErrorDocument 403
+
+# requerir SSL sin mod_ssl
+RewriteCond %{HTTPS} !=on [NC]
+RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+Automáticamente CHMOD varios tipos de archivo
+
+Este otro método es genial para hacer cambios de permiso mediante CHMOD a varios tipos de archivo. Pon estas reglas en el .htaccess de la carpeta raíz para que afecte a todos los tipos de archivo, o sitúalo en una carpeta concreta para que afecte solo a los archivos de la misma. Por supuesto, modifica los archivos del código a lo que quieras modificar tu:
+
+# cambiar ajustes CHMOD para archivos concretos
+# recuerda nunca poner CHMOD 777 a menos que sepas lo que estás haciendo
+# los archivos que requieran acceso global de escritura deben usar CHMOD 766 en vez de 777
+# puedes hacer que ciertos tipos de archivo sean privados con CHMOD en 400
+chmod .htpasswd files 640
+chmod .htaccess files 644
+chmod php files 600
+Oculta todas las extensiones de archivo
+
+Este método disfraza todos los tipos de archivo, sus extensiones de archivo, y los muestra como si fuesen archivos .php (o lo que tu quieras):
+
+# disfraza todas las extensiones de archivo como si fuesen php
+ForceType application/x-httpd-php
+Protégete contra ataques de denegación de servicio (DOS) limitando el tamaño de carga de archivo
+
+Una manera de proteger tu servidor de ataques DOS es limitar el tamaño máximo permitido para carga de archivos. En este ejemplo limitamos el tamaño de subida a 10240000 bytes, el equivalente a 10 megabytes. Lógicamente, este código solo es útil si permites subir archivos a tu sitio:
+
+# protección contra ataques DOS limitando el tamaño de carga de archivos
+LimitRequestBody 10240000
+Asegura directorios desactivando la ejecución de scripts
+
+Para evitar la ejecución de scripts maliciosos nada mejor que asegurar los directorios que puedan verse afectados. Cambia las extensiones de script a lo que necesites:
+
+# asegurar directorio desactivando la ejecución de scripts
+AddHandler cgi-script .php .pl .py .jsp .asp .htm .shtml .sh .cgi
+Options -ExecCGI
+Trucos de usabilidad
+
+estandares web
+Miminiza el parpadeo de imagen por CSS en IE6
+
+Con las siguientes reglas minimizamos o incluso eliminados el parpadeo de imagen de fondo por CSS en Internet Explorer 6:
+
+# minimizar parpadeo de imagen en IE6
+ExpiresActive On
+ExpiresByType image/gif A2592000
+ExpiresByType image/jpg A2592000
+ExpiresByType image/png A2592000
+Sirve páginas de error personalizadas
+
+Usa las siguientes reglas para mostrar tus propias páginas de error personalizadas. Simplemente recuerda cambiar la ruta y archivos por los que hayas creado tu. Ten en cuenta que tus páginas de error deben pesar más de 512 bytes para que no las ignore Internet Explorer:
+
+# servir paginas de error personalizadas
+ErrorDocument 400 /errores/400.html
+ErrorDocument 401 /errores/401.html
+ErrorDocument 403 /errores/403.html
+ErrorDocument 404 /errores/404.html
+ErrorDocument 500 /errores/500.html
+Ofrece un documento de error global
+
+# ofrece un documento de error global
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ /carpeta/error.php [L]
+Usa comprobación de errores de ortografía básicos en URLs
+
+El siguiente truco es magia pura para corregir errores básicos de ortografía en URLs:
+
+# corregir automaticamente errores de ortografia
+<IfModule mod_speling.c>
+CheckSpelling On
+</IfModule>
+Indica al navegador que descargue los archivos multimedia en vez de mostrarlos
+
+Normalmente los navegadores tratan de reproducir los archivos multimedia cuando ofreces un enlace a los mismos. El siguiente método fuerza a que se muestre un mensaje en el que ofrece reproducirlos o descargarlos:
+
+# indica al navegador que descargue los archivos multimedia
+AddType application/octet-stream .avi
+AddType application/octet-stream .mpg
+AddType application/octet-stream .wmv
+AddType application/octet-stream .mp3
+Indica al servidor que muestre el código fuente de los tipos de archivo dinámicos
+
+En ocasiones puede que quieras mostrar el contenido de archivos dinámicos en vez de ejecutarlos como scripts. Crea un directorio donde situar estos archivos que prefieres que se visualicen en vez de ejecutarlos y añade la siguiente línea de código al .htaccess de ese directorio:
+
+RemoveHandler cgi-script .pl .py .cgi
+Redirige a los visitantes a un sitio temporal durante tareas de desarrollo o mantenimiento
+
+Cuando estás haciendo tareas de desarrollo, reparación o mantenimiento, es buena idea disponer de un sitio alternativo donde ofrecer contenido a tus visitantes, y sobre todo avisarles de que el sitio no está desaparecido sino simplemente mejorándose. Por supuesto, debes disponer del sitio temporal y adaptar el código a la ruta que elijas:
+
+# redirigir a los visitantes a un sitio alternativo
+ErrorDocument 403
+Order deny,allow
+Deny from all
+Allow from 99.88.77.66
+Pide contraseña de acceso a los visitantes durante tareas de desarrollo o mantenimiento
+
+Otra posible solución es esconder tu sitio durante las tareas de mantenimiento o mejora. Para ello bloquearemos los acceso normales pidiendo usuario y contraseña mediante el método anterior de .httppasswd y permitiremos acceso a IPs concretas:
+
+# contraseña para los visitantes
+AuthType basic
+AuthName "Este sitio está actualmente en mantenimiento"
+AuthUserFile /home/ruta/.htpasswd
+AuthGroupFile /dev/null
+Require valid-user
+# permitimos al webmaster y otros acceder
+Order Deny,Allow
+Deny from all
+Allow from 111.222.33.4
+Allow from favorite.validation/services/
+Allow from googlebot.com
+Satisfy Any
+Evita acceso a archivos o directorios durante periodos de tiempo concretos
+
+Estupendo truco para evitar accesos por periodos horarios. Muy friki pero útil en ocasiones:
+
+# evitar acceso a media noche
+RewriteCond %{TIME_HOUR} ^12$
+RewriteRule ^.*$ - [F,L]
+
+# evitar accesos mientras comes
+RewriteCond %{TIME_HOUR} ^(12|13|14|15)$
+RewriteRule ^.*$ - [F,L]
+Trucos de redirección con .htaccess
+
+redireccion web
+Nota importante relativa a las redirecciones a través de mod_rewrite
+
+Para que funcionen las redirecciones que usen la directiva mod_rewrite es necesario que esté activo RewriteEngine. Es una práctica común activar la directiva  mod_rewrite, ya sea en el archivo de configuración del servidor o al principio del fichero .htaccess en la carpeta raíz del sitio. Si la directiva mod_rewrite no está incluida en alguno de estos dos lugares debería añadirse en la primera línea de cualquier bloque de código que use una función de rewrite (p.ej., mod_rewrite), pero solo debe incluirse una sola vez en cada archivo .htaccess:
+
+# se inicia y activa el motor rewrite
+RewriteEngine on
+Redirección desde http://www.dominio.es a
+
+Se puede usar una redirección 301 para definir una redirección permanente desde la versión con www de un dominio a su respectiva versión sin www. Eso sí, comprueba que no hay errores siempre que hagas una redirección 301, hay incluso herramientas de comprobación de cabeceras del servidor para ello. También es importante incluir siempre una barra «/» el enlazar directorios, y – muy importante – no marees a los buscadores, sé consistente con la decisión de www o no www, o lo usas siempre o nunca pero no una mezcla:
+
+# redirección permanente de dominio www a sin www
+RewriteEngine on
+Options +FollowSymLinks
+RewriteCond %{HTTP_HOST} ^www\.dominio\.es$ [NC]
+RewriteRule ^(.*)$ [R=301,L]
+Redirección desde http://viejo-dominio.es a
+
+Un modo básico de cambiar de un dominio viejo a  uno nuevo (en el que no cambien los nombres de archivos y carpetas, importante) es crear una regla de Rewrite para redirigir del viejo dominio al nuevo. Nada más hacer la redirección puede que aún veas la URL del viejo dominio en la barra de direcciones del navegador, así que para comprobar que lo has hecho bien haz clic en cualquier enlace interno o imagen para comprobar que se ha hecho la redirección y todo está en el nuevo:
+
+# redireccion de un dominio viejo al nuevo
+RewriteEngine On
+RewriteRule ^(.*)$ [R=301,L]
+Redirección a una dirección concreta en base a caracteres concretos
+
+No es tan raro. Imagina que quieres redirigir cualquier petición que contenga el carácter «seo» a una categoría concreta situada en https://ayudawp.com, pues entonces remplazaremos en el ejemplo la cadena «texto-buscado» por «seo» y, lógicamente, la URL de destino:
+
+# redirigir cualquier variación de un carácter específico a una dirección concreta
+RewriteRule ^texto-buscado http://ayuda.com/categoria/seo/ [R]
+
+Y aquí otros dos métodos para hacer este tipo de tareas especiales:
+
+# redirigir variaciones de URL al mismo directorio de del mismo servidor
+AliasMatch ^/espec(ie|ies) /www/docs/destino
+
+# redirigir variaciones de URL al mismo  directorio de otro servidor
+RedirectMatch ^/[eE]spec(ie|ies)
+Otros curiosos pero estupendos trucos de redirección
+
+# redirección de un sitio completo con 301
+redirect 301 /
+
+# redirigir un archivo concreto con 301
+redirect 301 /current/currentfile.html http://www.newdomain.com/new/newfile.html
+
+# redirigir un sitio completo con redirección permanente
+Redirect permanent /
+
+# redirigir una página o directorio con redirección permanente
+Redirect permanent viejo_archivo.html
+Redirect permanent /viejo_directorio/
+
+# redirigir un archivo usando RedirectMatch
+RedirectMatch 301 ^.*$
+
+Nota: Al redirigir archivos concretos utiliza la regla de Apache Redirect para los archivos dentro de un mismo dominio y la regla de Apache RewriteRule para cualquier otro dominio, especialmente si son distintos. La regla RewriteRule es más potente que la regla Redirect, y debería funcionar de manera más eficaz.
+
+Por tanto, usaremos los siguientes códigos para conseguir una redirección más precisa y potente (la primera línea redirige un archivo, la segunda un directorio y la tercera un dominio):
+
+# redirigir archivos directorios y dominios con RewriteRule
+RewriteRule
+RewriteRule
+RewriteRule
+Envia a los visitantes a un subdominio
+
+Esta regla te asegura que todos los visitantes que estén viendo páginas en el subdominio que elijas. Edita «subdomain», «domain» y «tld» para poner tu subdominio, dominio y extensión de dominio, respectivamente:
+
+# envía a los visitantes a un subdominio
+RewriteCond %{HTTP_HOST} !^$
+RewriteCond %{HTTP_HOST} !^subdomain\.domain\.com$ [NC]
+RewriteRule ^/(.*)$ [L,R=301]
+Más diversión con RewriteCond y RewriteRule
+
+# rewrite solo si no se encuentra el archivo
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)especial\.html?$ cgi-bin/especial/especial-html/$1
+
+# rewrite solo si no se encuentra una imagen
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule imagenes/especial/(.*).gif cgi-bin/especial/mkgif?$1
+
+# reglas seo de rewrite para varias carpetas
+RewriteRule ^(.*)/aud/(.*)$ $1/archivos-audio/$2 [L,R=301]
+RewriteRule ^(.*)/img/(.*)$ $1/archivos-imagen/$2 [L,R=301]
+RewriteRule ^(.*)/fla/(.*)$ $1/archivos-flash/$2 [L,R=301]
+RewriteRule ^(.*)/vid/(.*)$ $1/archivos-video/$2 [L,R=301]
+
+# analisis de paquetes del navegador - sniffers - mediante entornos variables de htaccess
+RewriteCond %{HTTP_USER_AGENT} ^Mozilla.*
+RewriteRule ^/$ /index-for-mozilla.html [L]
+RewriteCond %{HTTP_USER_AGENT} ^Lynx.*
+RewriteRule ^/$ /index-for-lynx.html [L]
+RewriteRule ^/$ /index-for-all-others.html [L]
+
+# redirigir una query a la búsqueda de Google
+Options +FollowSymlinks
+RewriteEngine On
+RewriteCond %{REQUEST_URI} .google\.php*
+RewriteRule ^(.*)$ ^http://www.google.com/search?q=$1 [R,NC,L]
+
+# denegar una petición en base al metodo de la petición
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK|OPTIONS|HEAD)$ [NC]
+RewriteRule ^.*$ - [F]
+
+# redirigir las cargas a un sitio mejor
+RewriteCond %{REQUEST_METHOD} ^(PUT|POST)$ [NC]
+RewriteRule ^(.*)$ /cgi-bin/procesador-cargas.cgi?p=$1 [L,QSA]
+Más diversión con Redirect 301 y RedirectMatch 301
+
+# redirección seo para un solo archivo
+Redirect 301 /viejo-directorio/viejo-archivo.html
+
+# redireccion seo para varios archivos
+# redirige todos los archivos de un directorio cuyas primeras letras sean xyz
+RedirectMatch 301 /directorio/xyz(.*)
+
+# redireccion seo para redigirir un sitio entero a otro dominio
+Redirect 301 /
+Trucos especiales de .htaccess para WordPress
+
+trucos wordpress
+
+Hemos visto muchos trucos de .htaccess para WordPress pero aquí tienes los conceptos básicos y también un truco útil que es posible que no conocieses.
+Los «permalinks» de WordPress
+
+Ya sabrás que WordPress crea el archivo .htaccess cuando cambias los enlaces permanentes (permalinks) a alguna otra cosa distinta de los que vienen por defecto, y además añade unas reglas básicas para que funcionen. Esta configuración básica sería la siguiente:
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+
+Ahora bien, si WordPress está instalado en  un subdirectorio (por ejemplo «blog») entonces las directivas serían así
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /blog/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /blog/index.php [L]
+</IfModule>
+# END WordPress
+Asegura los formularios de contacto de WordPress
+
+Un modo de asegurar los por defecto inseguros formularios de contacto de WordPress es verificar el dominio desde donde se invoca al formulario. Recuerda cambiar el dominio y página de contacto del ejemplo por los tuyos:
+
+# asegurar formularios de contacto de wordpress depende de quien lo invoca
+RewriteCond %{HTTP_REFERER} !^http://www.dominio.es/.*$ [NC]
+RewriteCond %{REQUEST_POST} .*contacto.php$
+RewriteRule .* - [F]
+Trucos extra de .htaccess
+
+truco magia
+Activa SSI para tipos de archivo HTML/SHTML
+
+# activar SSI para tipos de archivo HTML y o SHTML
+AddType text/html .html
+AddType text/html .shtml
+AddHandler server-parsed .html
+AddHandler server-parsed .shtml
+AddHandler server-parsed .htm
+Da acceso CGI a un directorio concreto
+
+# dar acceso CGI a un directorio concreto
+Options +ExecCGI
+AddHandler cgi-script cgi pl
+# para activar todos los scripts de un directorio usa lo siguiente
+SetHandler cgi-script
+Desactiva magic_quotes_gpc en servidores con PHP activo
+
+# desconectar magic_quotes_gpc en servidores con PHP activo
+<ifmodule mod_php4.c>
+php_flag magic_quotes_gpc off
+</ifmodule>
+
+Y hasta aquí. Espero que ha

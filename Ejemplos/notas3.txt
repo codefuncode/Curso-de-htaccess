@@ -1,0 +1,56 @@
+
+.htaccess protect download private files from user's directory using php
+
+My php script create a user's directory to store private files and I need to keep it private except for the owner.
+
+Basically my structure is like this:
+
+- root/
+- storage/
+---- users/
+----------user1/
+---------------.htaccess
+---------------images/
+---------------tmp/
+-------------------session-id-file
+----------user2/
+---------------.htaccess
+---------------images/
+---------------tmp/
+-------------------session-id-file
+
+This means when a new user register then a new user's directory is created in /storage/users:
+
+$dir = __DIR__ . "/storage/user/" . $user["id"]; mkdir($dir);
+
+Then a new .htaccess is created inside:
+
+ $myfile = fopen($file, "w") or die("Unable to create file!");
+ $txt = "RewriteCond %{HTTP_COOKIE}        PHPSESSID=(\w+)\n
+ **RewriteCond {CURRENT-DIRECTORY}/tmp/access-%1      -f \n**
+ RewriteRule ^(.+)$  $1  [L]\n
+ RewriteRule .+  /deny   [L]\n";
+ fwrite($myfile, $txt);
+ fclose($myfile);
+
+The .htaccess appears as:
+
+RewriteCond %{HTTP_COOKIE}        PHPSESSID=(\w+)
+RewriteCond {CURRENT-DIRECTORY}/tmp/access-%1      -f
+RewriteRule ^(.+)$  $1  [L]
+
+RewriteRule .+  /deny   [L]
+
+When user login a new session-id-file is crerated in user's tmp directory:
+
+touch($dir . "/tmp/" . session_id());
+
+My question is: how detect {current directory} where the htaccess is located ? Basically how fix the wrong line in .htaccess:
+
+        RewriteCond {CURRENT-DIRECTORYY}}/tmp/access-%1      -f \n
+
+I have seen similar question but I'm not able to detect current directory based on directory created on fly.
+
+A good option could be using just one .htaccess into /users directory instead of many .htaccess for each user as I did in my example.
+
+Thanks for any suggestion :)

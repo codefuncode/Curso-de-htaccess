@@ -1,0 +1,16 @@
+////////////////////////////
+sudo /opt/lampp/lampp start
+////////////////////////////
+
+
+Referencias 
+
+https://norfipc.com/codigos/como-usar-htaccess-apache-trucos-ejemplos-practicos.php
+
+https://desarrollowp.com/blog/tutoriales/creando-el-htaccess-perfecto-para-wordpress/
+
+https://www.ticarte.com/contenido/como-configurar-el-fichero-htaccess
+
+https://www.incibe-cert.es/blog/sec-joomla
+
+https://ayudawp.com/todo-sobre-htaccess/

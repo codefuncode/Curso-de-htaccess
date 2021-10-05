@@ -1,0 +1,215 @@
+Nuestro archivo .htaccess optimizado para WordPress quedaría de la siguiente manera:
+
+
+# BEGIN WordPress
+# Las directivas (líneas) entre `BEGIN WordPress` y `END WordPress` se generan dinámicamente
+# , y solo se deberían modificar mediante filtros de WordPress.
+# Cualquier cambio en las directivas que hay entre esos marcadores se sobreescribirán.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
+
+# BEGIN DWP WPO
+# Las directivas (líneas) entre `BEGIN DWP WPO` y `END DWP WPO` se generan dinámicamente
+# , y solo se deberían modificar mediante filtros de WordPress.
+# Cualquier cambio en las directivas que hay entre esos marcadores se sobreescribirán.
+# LEVERAGE BROWSER CACHING
+<IfModule mod_mime.c>
+  AddType application/font-woff2 .woff2
+  AddType application/x-font-woff2 .woff2
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access 1 month"
+# HTML
+  ExpiresByType text/html A3600
+# CSS
+  ExpiresByType text/css A31536000
+# JavaScript
+  ExpiresByType application/javascript A31536000
+  ExpiresByType text/javascript A31536000
+# HTML components (HTCs)
+  ExpiresByType text/x-component A31536000
+  ExpiresByType text/x-js A31536000
+  ExpiresByType application/x-javascript A31536000
+# Data interchange
+  ExpiresByType application/json A31536000
+  ExpiresByType application/xml A3600
+  ExpiresByType text/xml A3600
+# Manifest files
+  ExpiresByType application/x-web-app-manifest+json A3600
+  ExpiresByType text/cache-manifest A3600
+# Web feeds
+  ExpiresByType application/atom+xml A3600
+  ExpiresByType application/rss+xml A3600
+# Favicon (cannot be renamed!)
+  ExpiresByType image/x-icon A31536000
+# Images
+  ExpiresByType image/svg+xml A31536000
+  ExpiresByType image/bmp A31536000
+  ExpiresByType image/gif A31536000
+  ExpiresByType image/jpg A31536000
+  ExpiresByType image/jpeg A31536000
+  ExpiresByType image/webp A31536000
+  ExpiresByType image/png A31536000
+# Media
+  ExpiresByType audio/mpeg A31536000
+  ExpiresByType audio/ogg A31536000
+  ExpiresByType audio/wma A31536000
+  ExpiresByType video/asf A31536000
+  ExpiresByType video/quicktime A31536000
+  ExpiresByType video/mp4 A31536000
+  ExpiresByType video/mpeg A31536000
+  ExpiresByType video/ogg A31536000
+  ExpiresByType video/webm A31536000
+# Web fonts
+  ExpiresByType application/font-woff A31536000
+  ExpiresByType application/font-woff2 A31536000
+  ExpiresByType application/x-font-woff A31536000
+  ExpiresByType application/vnd.ms-fontobject A31536000
+  ExpiresByType application/x-font-otf A31536000
+  ExpiresByType application/x-font-ttf A31536000
+  ExpiresByType font/opentype A31536000
+  ExpiresByType image/svg+xml A31536000
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE image/bmp
+  AddOutputFilterByType DEFLATE image/x-icon
+  AddOutputFilterByType DEFLATE image/webp
+  AddOutputFilterByType DEFLATE image/vnd.microsoft.icon
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/richtext
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE text/cache-manifest
+  AddOutputFilterByType DEFLATE text/vcard
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE application/ld+json
+  AddOutputFilterByType DEFLATE application/manifest+json
+  AddOutputFilterByType DEFLATE application/schema+json
+  AddOutputFilterByType DEFLATE application/x-web-app-manifest+json
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/rdf+xml
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/pdf
+  AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+  AddOutputFilterByType DEFLATE application/x-font
+  AddOutputFilterByType DEFLATE application/x-font-opentype
+  AddOutputFilterByType DEFLATE application/x-font-truetype
+  AddOutputFilterByType DEFLATE application/x-font-otf
+  AddOutputFilterByType DEFLATE application/x-font-ttf
+  AddOutputFilterByType DEFLATE application/x-font-woff
+  AddOutputFilterByType DEFLATE application/font-woff
+  AddOutputFilterByType DEFLATE application/font-woff2
+  AddOutputFilterByType DEFLATE font/opentype
+  AddOutputFilterByType DEFLATE font/ttf
+  AddOutputFilterByType DEFLATE font/eot
+  AddOutputFilterByType DEFLATE font/otf
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header unset ETag
+  FileETag None
+</IfModule>
+
+<FilesMatch "\.(css|js|html|htm|rtf|rtx|svg|txt|xsd|xsl|xml|asf|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|webp|json|mdb|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|_otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|swf|tar|tif|tiff|ttf|ttc|_ttf|wav|wma|woff|woff2|xla|xls|xlsx|xlt|xlw|zip)$">
+  <IfModule mod_headers.c>
+    Header set Pragma "public"
+    Header append Cache-Control "public"
+    Header set Expires "max-age=31536000, public"
+  </IfModule>
+</FilesMatch>
+# END DWP WPO
+# BEGIN DWP SECURITY
+# Las directivas (líneas) entre `BEGIN DWP SECURITY` y `END DWP SECURITY` se generan dinámicamente
+# , y solo se deberían modificar mediante filtros de WordPress.
+# Cualquier cambio en las directivas que hay entre esos marcadores se sobreescribirán.
+
+# HTTP SECURITY HEADERS
+<IfModule mod_headers.c>
+  Header always append X-Frame-Options SAMEORIGIN
+  Header set X-Content-Type-Options nosniff
+  Header set X-XSS-Protection "1; mode=block"
+  Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
+
+# DISABLE DIRECTORY BROWSING
+Options All -Indexes
+
+# DISABLE SERVER SIGNATURE
+ServerSignature Off
+
+# STRONG IMPORTANT FILES PROTECTION
+<FilesMatch "^.*(error_log|license\.txt|readme\.html|wp-config\.php|\.[hH][tT][aApP].*)$">
+  Require all denied
+</FilesMatch>
+
+# STRONG IMPORTANT FILES PROTECTION II: IN WP-ADMIN
+<Files ~ "^(install|setup\-config)\.php$">
+  Require all denied
+</Files>
+
+# PREVENT CODE HACKING AND INJECTIONS
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{QUERY_STRING} proc/self/environ [OR]
+  RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
+  RewriteCond %{QUERY_STRING} base64_encode.*(.*) [OR]
+  RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+  RewriteCond %{QUERY_STRING} GLOBALS(=|[|\%[0-9A-Z]{0,2}) [OR]
+  RewriteCond %{QUERY_STRING} _REQUEST(=|[|\%[0-9A-Z]{0,2})
+  RewriteRule ^(.*)$ index.php [F,L]
+</IfModule>
+
+# STOPS BOTS TRYING TO REGISTER IN WORDPRESS SITES THAT HAVE REGISTRATION DISABLED
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{QUERY_STRING} ^action=register$ [NC,OR]
+  RewriteCond %{HTTP_REFERER} ^.*registration=disabled$ [NC]
+  RewriteRule (.*) - [F]
+</IfModule>
+
+# BLOCK TRACE & TRACK REQUEST METHODS
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)$
+  RewriteRule (.*) - [F]
+</IfModule>
+
+# BLOCK ANY QUERY STRING TRYING TO GET A COPY OF WP-CONFIG.PHP FILE
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{QUERY_STRING} ^.*=(.*wp-config\.php)$ [NC]
+  RewriteRule (.*) - [F]
+</IfModule>
+
+# BLOCK WPSCAN BY USER-AGENT
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_USER_AGENT} WPScan
+  RewriteRule (.*) http://127.0.0.1 [L,R=301]
+</IfModule>
+
+# HOT LINKING PROTECTION
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_REFERER} !^$
+  RewriteCond %{HTTP_REFERER} !^https://desarrollowp.com.*$ [NC]
+  RewriteRule \.(jpg|jpeg|png|gif|bmp|zip|rar|css|pdf)$ http://i.imgur.com/MlQAH71.jpg [NC,F,L]
+</IfModule>
+# END DWP SECURITY

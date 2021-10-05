@@ -1,0 +1,81 @@
+ Un fichero .htaccess (hypertext access), también conocido como archivo de configuración distribuida, es un fichero especial, popularizado por el Servidor HTTP Apache que permite definir diferentes directivas de configuración para cada directorio (con sus respectivos subdirectorios) sin necesidad de editar el archivo de configuración principal de Apache.
+
+Por directivas de configuración nos referimos a restricciones de seguridad o comportamientos específicos de nuestro servidor HTTP. No pretendemos realizar un manual detallado del mismo, vamos a enumerar algunas de las directivas más comunes y otras concretas que hemos necesitado en nuestra experiencia con Apache.
+
+El fichero .htaccess es un fichero de texto ASCII y oculto (los ficheros Linux que empiezan por punto están ocultos), y que podemos colocar en cualquier directorio donde tengamos publicado un recurso HTTP que ofrezcamos mediante nuestro servidor web Apache. Sabiendo que este comportamiento penalizará algo la carga de nuestro recurso web, al tener que Apache procesar primeramente las directivas de este fichero y luego devolver el contenido.
+
+Los ficheros .htaccess están habilitados por defecto, pero podemos controlar este comportamiento a través de la directiva AllowOverride que se encuentra en el archivo de configuración httpd.conf.
+
+Pasamos ya a enumarar algunas de sus directivas.
+Fichero índice del directorio
+
+Podemos específicar qué fichero debe buscar en el directorio para mostrar por defecto en el caso de que la URL no lo indique, por ejemplo, http://dominio.com/usuarios. En ese caso se buscará en el directorio "usuarios" el fichero índice. Se pueden especificar varios en el orden de preferencia que deseemos.
+
+DirectoryIndex index.php index.html index.htm
+
+ 
+Listar u ocultar el contenido de un directorio
+
+Si en la URL escribimos el nombre del directorio y en ese directorio no se encuentra un fichero índice de los que hemos enumerado en las directivas anteriores, el comportamiento por defecto es enumerar todo el contenido del mismo. Podemos evitar este comportamiento ocultando el contenido de los directorios.
+
+Options -Indexes
+
+ 
+Redirigir los errores HTTP a páginas específicas
+
+Los servidores web devuelven un código establecido en caso de no encontrar la página que se busca, o tener un acceso denegado a la misma, o que el servidor esté caído. Podemos redirigir estos errores HTTP a páginas concretas de nuestro sitio web para hacer los errores más amigables.
+
+ErrorDocument 403 /denied_access.php
+ErrorDocument 404 /not_found.php
+
+ 
+Redirigir las peticiones URL de dominios o archivos
+
+Vamos a comenzar comentando una serie de flags o banderas que se van a utilizar en las siguientes directivas, para entender mejor su uso:
+
+    R: (redirect) para forzar una redirección HTTP
+    F: (forbidden) para prohibir el acceso
+    G: (gone) para eliminar la URL
+    P: (proxy) para pasar la URL a mod_proxy.
+    L: (last) para detener el procesamiento.
+    N: (next) para continuar
+    C: (chain) para encadenar la regla activa con la siguiente
+    F: (type) para obligar un determinado tipo MIME.
+    NS: (nosubreq) para asegurarse que la regla sólo se aplica si no se realizan subpeticiones internas.
+    NC: (nocase) para que la URL no distinga mayúsculas de minúsculas.
+    QSA: (qsappend) para añadir una nueva cadena de consulta (query string) en lugar de sustituirla.
+    PT: (passthrough) para pasar la URL modificada a otro módulo apache.
+    S: (skip) para saltar la siguiente regla.
+    E: (env) para asignar una variable de entorno.
+
+Si queremos obligar a visitar nuestro dominio siempre con "www", es decir, si se visita la página http://dominio.com que se redirija automáticamente a http://www.dominio.com
+
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^ http%{ENV:protossl}://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+Si queremos obligar a visitar nuestro dominio siempre sin "www", es decir, si se visita la página http://www.dominio.com que se redirija automáticamente a http://dominio.com
+
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ http%{ENV:protossl}://%1%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+Esto mismo lo podemos emplear en redirigir las peticiones a un dominio concreto .com o .es por ejemplo, si tenemos varios comprados.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteCond %{HTTP_HOST} ^dominio\.es$
+  RewriteRule ^(.*)$ "http\:\/\/www\.dominio\.com\/$1" [R=301,L]
+</IfModule>
+
+En ocasiones, archivos como favicon.ico hay navegadores que nos obligan a buscarlo en directorios concretos, aunque nosotros los hayamos situado en otros diferentes. Es el caso de Drupal con multisitios, cada uno de ellos va a tener su propio fichero favicon.ico, pero muchas peticiones irán dirigidas por defecto a http://www.dominio.com/favicon.ico. En este caso podemos configurar también una directiva que nos permita redirigir ese archivo concreto.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteCond %{HTTP_HOST} \.dominio\.com$ [NC]
+  RewriteRule ^favicon.ico$ directorio/img/favicon.ico [NC,L]
+</IfModule>

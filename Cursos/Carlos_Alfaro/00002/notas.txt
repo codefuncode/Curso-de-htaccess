@@ -1,0 +1,2 @@
+Por alguna razón no me permite ver el index  cuando se coloca Option -Indexes en la misma ubicación del idex 
+, por lo que he optado por incorporarlo dentó de  los directorios que necesito que no puedan indexar 
