@@ -1,0 +1,16 @@
+
+He verificado que php info tenga los módulos cargados pues me encuero usando localhost Xammp 
+
+Apache Version 	Apache/2.4.48 (Unix) OpenSSL/1.1.1k PHP/7.4.20 mod_perl/2.0.11 Perl/v5.32.1 
+
+
+En la siguiente ruta defino algunas directivas y estoy usando como base un vídeo de you tube lo cual las referencias están en este repositorio a ese canal de you tube y potros recursos escritos para la investigación. Dado que el vídeo es del 2017 
+Otras referencias empleadas en : 
+https://github.com/codefuncode/htaccess/blob/main/README.md
+
+
+Esta es la ruta  para el directorio htaccess
+https://github.com/codefuncode/htaccess/blob/main/Cursos/Carlos_Alfaro/00002/App/.htaccess
+
+Esta es el directorio la que les estoy aplicando las directivas htaccess
+https://github.com/codefuncode/htaccess/tree/main/Cursos/Carlos_Alfaro/00002/
