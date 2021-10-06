@@ -1,2 +1,162 @@
 Por alguna razón no me permite ver el index  cuando se coloca Option -Indexes en la misma ubicación del idex 
 , por lo que he optado por incorporarlo dentó de  los directorios que necesito que no puedan indexar 
+
+Temas 
+
+autoindex_module
+
+
+
+Referencias 
+Ruben O. Varela Rosa
+- Conditions - https://httpd.apache.org/.../current/mod/mod_rewrite.html...
+- Regla para rewrite https://httpd.apache.org/.../current/mod/mod_rewrite.html...
+Ahi están las variables, operadores, flags, etc.
+Que es lo que estas tratando de hacer?
+
+https://httpd.apache.org/docs/current/mod/mod_rewrite.html?fbclid=IwAR0chyHDdkGmfm0nc0pJX5-4TsJ1kp4lN__hlZ9IlWdzyOALlYcetUNFe2o#rewriterule
+
+https://httpd.apache.org/docs/current/mod/mod_rewrite.html?fbclid=IwAR1vvO9JftVFLr_kaOspCGEp3XmbQMQlW9ko4MJZC4Jc5YudumTlAfeM2bA#rewritecond
+
+
+
+<IfModule mod_rewrite.c>
+
+</IfModule>
+
+<IfModule mod_rewrite>
+
+</IfModule>
+
+# Descripción:	Encloses directives that are processed conditional on the presence or absence of a specific module
+# Sintaxis:	<IfModule [!]module-file|module-identifier> ... </IfModule>
+# Contexto:	server config, virtual host, directory, .htaccess
+# Anula:	All
+# Estado:	Core
+# Módulo:	core
+# ------------------------------------------------------------------------------
+# Compatibilidad:	Module identifiers are available in version 2.1 and later.
+# ------------------------------------------------------------------------------
+
+=======================================================================================================
+
+Descripción: define reglas para el motor de reescritura
+Sintaxis: Sustitución de patrones de RewriteRule [banderas]
+Contexto: configuración del servidor, host virtual, directorio, .htaccess
+Anular: FileInfo
+Estado: extensión
+Módulo: mod_rewrite
+
+La directiva RewriteRule es el verdadero caballo de batalla de la reescritura. La directiva puede ocurrir más de una vez, y cada instancia define una sola regla de reescritura. El orden en el que se definen estas reglas es importante: este es el orden en el que se aplicarán en tiempo de ejecución.
+
+El patrón es una expresión regular compatible con Perl. Con qué se compara este patrón varía según dónde se defina la directiva RewriteRule.
+¿Qué se empareja?
+
+En el contexto de VirtualHost, The Pattern inicialmente se comparará con la parte de la URL después del nombre de host y el puerto, y antes de la cadena de consulta (por ejemplo, '/app1/index.html'). Esta es la ruta URL (% codificada).
+
+En el contexto por directorio (Directory y .htaccess), el patrón se compara solo con una ruta parcial, por ejemplo, una solicitud de '/app1/index.html' puede resultar en una comparación con 'app1 / index.html' o 'index .html 'dependiendo de dónde se defina RewriteRule.
+
+La ruta del directorio donde se define la regla se elimina de la ruta del sistema de archivos actualmente mapeada antes de la comparación (hasta e incluyendo una barra diagonal). El resultado neto de esta eliminación de prefijos por directorio es que las reglas en este contexto solo coinciden con la parte de la ruta del sistema de archivos actualmente asignada 'debajo' donde se define la regla.
+
+Directivas como DocumentRoot y Alias, o incluso el resultado de sustituciones anteriores de RewriteRule, determinan la ruta del sistema de archivos actualmente mapeada.
+
+Si desea hacer coincidir el nombre de host, el puerto o la cadena de consulta, use un RewriteCond con las variables% {HTTP_HOST},% {SERVER_PORT} o% {QUERY_STRING} respectivamente.
+
+Reescrituras por directorio
+
+El motor de reescritura se puede utilizar en archivos .htaccess y en secciones de directorio, con cierta complejidad adicional.
+Para habilitar el motor de reescritura en este contexto, debe configurar 'RewriteEngine On' y las 'Opciones FollowSymLinks' deben estar habilitadas. Si su administrador ha deshabilitado la anulación de FollowSymLinks para el directorio de un usuario, entonces no puede usar el motor de reescritura. Esta restricción es necesaria por motivos de seguridad.
+Consulte la directiva RewriteBase para obtener más información sobre qué prefijo se agregará a las sustituciones relativas.
+Si desea hacer coincidir la ruta URL completa en un RewriteRule por directorio (htaccess), use la variable% {REQUEST_URI} en un RewriteCond.
+El prefijo eliminado siempre termina con una barra, lo que significa que la coincidencia se produce con una cadena que nunca tiene una barra al principio. Por lo tanto, un patrón con ^ / nunca coincide en el contexto por directorio.
+Aunque las reglas de reescritura están permitidas sintácticamente en las secciones Ubicación y Archivos (incluidas sus contrapartes de expresiones regulares), esto nunca debería ser necesario y no se admite. Una característica que probablemente se rompa en estos contextos son las sustituciones relativas.
+Los bloques If siguen las reglas del contexto del directorio.
+De forma predeterminada, mod_rewrite anula las reglas al fusionar secciones que pertenecen al mismo contexto. La directiva RewriteOptions puede cambiar este comportamiento, por ejemplo, usando la configuración Inherit.
+RewriteOptions también regula el comportamiento de las secciones que se establecen en el mismo nivel de anidamiento de la configuración. En el siguiente ejemplo, de forma predeterminada solo se consideran las RewriteRules indicadas en el segundo bloque If, ​​ya que las primeras se anulan. El uso de RewriteOptions Inherit obliga a mod_rewrite a fusionar las dos secciones y considerar ambos conjuntos de declaraciones, en lugar de solo la última.
+
+
+====================================================================
+
+Directiva RewriteCond
+Descripción: define una condición bajo la cual se llevará a cabo la reescritura.
+Sintaxis: RewriteCond TestString CondPattern [flags]
+Contexto: configuración del servidor, host virtual, directorio, .htaccess
+Anular: FileInfo
+Estado: extensión
+Módulo: mod_rewrite
+
+La directiva RewriteCond define una condición de regla. Uno o más RewriteCond pueden preceder a una directiva RewriteRule. La siguiente regla solo se usa si el estado actual del URI coincide con su patrón y si se cumplen estas condiciones.
+
+TestString es una cadena que puede contener las siguientes construcciones expandidas además de texto sin formato:
+
+RewriteRule backreferences: estas son backreferences de la forma $ N (0 = N = 9). De $ 1 a $ 9 brindan acceso a las partes agrupadas (entre paréntesis) del patrón, desde RewriteRule, que está sujeto al conjunto actual de condiciones de RewriteCond. $ 0 proporciona acceso a toda la cadena que coincide con ese patrón.
+Referencias inversas de RewriteCond: son referencias inversas de la forma% N (0 = N = 9). % 1 a% 9 proporcionan acceso a las partes agrupadas (nuevamente, entre paréntesis) del patrón, desde el último RewriteCond coincidente en el conjunto actual de condiciones. % 0 proporciona acceso a toda la cadena que coincide con ese patrón.
+Expansiones de RewriteMap: son expansiones de la forma $ {mapname: key | default}. Consulte la documentación de RewriteMap para obtener más detalles.
+Variables de servidor: son variables de la forma% {NAME_OF_VARIABLE} donde NAME_OF_VARIABLE puede ser una cadena tomada de la siguiente lista:
+
+--------------------
+HTTP headers:
+-------------------- 		
+HTTP_ACCEPT
+HTTP_COOKIE
+HTTP_FORWARDED
+HTTP_HOST
+HTTP_PROXY_CONNECTION
+HTTP_REFERER
+HTTP_USER_AGENT
+
+---------------------
+connection & request:
+--------------------- 
+AUTH_TYPE
+CONN_REMOTE_ADDR
+CONTEXT_PREFIX
+CONTEXT_DOCUMENT_ROOT
+IPV6
+PATH_INFO
+QUERY_STRING
+REMOTE_ADDR
+REMOTE_HOST
+REMOTE_IDENT
+REMOTE_PORT
+REMOTE_USER
+REQUEST_METHOD
+SCRIPT_FILENAME
+
+-------------------
+server internals:
+------------------- 	
+DOCUMENT_ROOT
+SCRIPT_GROUP
+SCRIPT_USER
+SERVER_ADDR
+SERVER_ADMIN
+SERVER_NAME
+SERVER_PORT
+SERVER_PROTOCOL
+SERVER_SOFTWARE
+
+--------------
+date and time:
+--------------
+TIME_YEAR
+TIME_MON
+TIME_DAY
+TIME_HOUR
+TIME_MIN
+TIME_SEC
+TIME_WDAY
+TIME 
+
+-------------
+specials:
+-------------
+API_VERSION
+CONN_REMOTE_ADDR
+HTTPS
+IS_SUBREQ
+REMOTE_ADDR
+REQUEST_FILENAME
+REQUEST_SCHEME
+REQUEST_URI
+THE_REQUEST

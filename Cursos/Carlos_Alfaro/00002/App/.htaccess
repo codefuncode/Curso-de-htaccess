@@ -1,6 +1,38 @@
+# Por alguna razón activo Option -Indexes y 
+# no se permite que se indexen ninguno de 
+# los ficheros del  directorio padre App. 
+# sin embargo si declaro la directiva dentro de los directorios css img y js 
+# funciona y permite le acceso a index.php 
+
+
+# He usado todas estas variantes activando y desactivando solo una de las opciones a continuación 
+
 # Option All -Indexes
+# Option -Indexes
+# Option +Indexes index.php
+
+# <directory /home/code/Escritorio/Proyecto/CODEFUNCODE/htaccess/Cursos/Carlos_Alfaro/00002/App/css>
+		# Option All -Indexes
+		# Options Indexes FollowSymLinks
+# </directory>
+
+# <directory /home/code/Escritorio/Proyecto/CODEFUNCODE/htaccess/Cursos/Carlos_Alfaro/00002/App/js>
+		# Option All -Indexes
+		# Options Indexes FollowSymLinks
+# </directory>
+
+# <directory /home/code/Escritorio/Proyecto/CODEFUNCODE/htaccess/Cursos/Carlos_Alfaro/00002/App/img>
+		# Option All -Indexes
+		# Options Indexes FollowSymLinks
+# </directory>
+
+
+
+# DirectoryIndex disabled  css img js
+# DirectoryIndex css img js
+# DirectoryIndex index.php  
 
 # Options +FollowSymLinks
 # RewriteEngine on
-# RewriteRule index/firstid/(.*)/secondid/(.*)/ index.php?firstid=$1&secondid=$2
-# RewriteRule index/firstid/(.*)/secondid/(.*) index.php?firstid=$1&secondid=$2
+# RewriteRule index/firstid/(.*)/secondid/(.*)/ index.php?firstid=$1&secondid;=$2
+# RewriteRule index/firstid/(.*)/secondid/(.*) index.php?firstid=$1&secondid;=$2
