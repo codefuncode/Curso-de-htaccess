@@ -1,0 +1,23 @@
+En este articulo
+
+     Redirecciones
+     Recursos de origen cruzado
+     Mensajes/páginas de error personalizadas
+     Prevención de errores
+     Tipos de medios y codificaciones de caracteres
+     Establecer el atributo Charset predeterminado
+     Establecer el conjunto de caracteres para tipos de medios específicos
+     Mod_rewrite y las directivas RewriteEngine
+     Opciones de marco
+     Política de seguridad de contenido (CSP)
+     Acceso al directorio
+     Bloquear el acceso a archivos y directorios ocultos
+     Bloquear el acceso a archivos con información sensible
+     Seguridad de transporte estricta HTTP (HSTS)
+     Impedir que algunos navegadores MIME detecten la respuesta
+     Política de referencia
+     Deshabilitar el método TRACE HTTP
+
+
+
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Apache_Configuration_htaccess

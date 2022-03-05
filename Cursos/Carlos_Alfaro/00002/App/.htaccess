@@ -7,11 +7,11 @@
 
 # He usado todas estas variantes activando y desactivando solo una de las opciones a continuación 
 
-# Option All -Indexes
+Option All -Indexes
 # Option -Indexes
 # Option +Indexes index.php
 
-# <directory /home/code/Escritorio/Proyecto/CODEFUNCODE/htaccess/Cursos/Carlos_Alfaro/00002/App/css>
+# <directory /Curso-de-htaccess/Cursos/Carlos_Alfaro/00002/App/css>
 		# Option All -Indexes
 		# Options Indexes FollowSymLinks
 # </directory>

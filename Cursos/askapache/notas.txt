@@ -1,0 +1,109 @@
+
+
+https://www.askapache.com/htaccess/
+
+Tabla de contenido
+
+Introducción
+Htaccess - Evolucionado
+AskApache Htaccess Journey
+¿Qué es .htaccess?
+    Creación de archivos Htaccess
+    Alcance Htaccess
+Sintaxis del archivo Htaccess
+Directivas Htaccess
+Ejemplos de configuración del servidor principal
+Ejemplos de fragmentos de código .htaccess
+    Redirigir a todos excepto la dirección IP a una página alternativa
+    Al desarrollar sitios
+    Arreglar el aviso de inicio de sesión doble
+    Establecer la zona horaria del servidor (GMT)
+    Correo electrónico del administrador para ErrorDocument
+    Firma del servidor para documento de error
+    Encabezados Charset e Idioma
+    No permitir la ejecución de secuencias de comandos
+    Denegar métodos de solicitud
+    Forzar solicitud de "Guardar archivo como"
+    Mostrar código fuente CGI
+    Sirva todos los archivos .pdf en su sitio usando .htaccess y mod_rewrite con el script php.
+    Reescribir a www
+    Reescribir a www dinámicamente
+    301 redirigir archivo antiguo
+    Redirección 301 en todo el directorio
+    Protegiendo tu php.cgi
+    Establecer cookies basadas en la solicitud
+    Establecer cookie con variable env
+    Documentos de error personalizados
+    Implementación de un esquema de almacenamiento en caché con .htaccess
+    Proteger con contraseña un solo archivo
+    Proteger con contraseña múltiples archivos
+    Enviar encabezados personalizados
+    Bloqueo basado en encabezado de agente de usuario
+    Bloqueo con RewriteCond
+    .htaccess para mod_php
+    .htaccess para php como cgi
+    Envoltura de shell para php.ini personalizado
+    Agregar valores de encabezados HTTP
+    Dejar de vincular
+Ejemplos de archivos .htaccess
+Modificaciones avanzadas_Reescrituras
+    Protección de directorio
+    Proteger con contraseña wp-login.php
+    Proteger con contraseña wp-admin
+    Proteger wp-content
+    Protege wp-incluye
+    Exploits comunes
+    Dejar de vincular
+    Métodos de solicitud segura
+    Prohibir apoderados
+    Real wp-comentarios-post.php
+    PROTOCOLO HTTP
+    ESPECIFICAR CARACTERES
+    Longitud de contenido MALO
+    Tipo de contenido MALO
+    Falta HTTP_HOST
+    Explotación de gráficos falsos
+    Sin agente de usuario, sin POST
+    Sin referente, sin comentarios
+    Spam de referencia
+    Asigne todos los URI excepto los correspondientes a archivos existentes a un controlador
+    Asignar cualquier solicitud a un controlador
+    Y para guiones CGI:
+    Asigne los URI correspondientes a los archivos existentes a un controlador en su lugar
+    Denegar el acceso si var=val contiene la cadena foo.
+    Eliminación de la cadena de consulta
+    Agregar a la cadena de consulta
+    Reescritura para ciertas cadenas de consulta
+    Modificación de la cadena de consulta
+Mejores artículos .htaccess
+    .htaccess para webmasters
+    Mod_Rewrite Reescritura de URL
+    Redirecciones 301 sin mod_rewrite
+    PHP seguro con .htaccess
+    Manipulación de cookies .htaccess
+    Almacenamiento en caché .htaccess
+    Protección de contraseña y autenticación
+    Controlar encabezados HTTP
+    Bloqueo de spam y bots malos
+    Consejos de PHP htaccess
+    Redirecciones de HTTP a HTTPS con mod_rewrite
+    SSL en .htaccess
+    SetEnvIf y SetEnvIfNoCase en .htaccess
+    Seguridad del sitio con .htaccess
+    fusionando notas
+Mis enlaces .htaccess favoritos
+Directivas Htaccess
+Variables de acceso
+Módulos Htaccess
+Software Htaccess
+Análisis técnico de .htaccess
+    Estructuras de configuración por directorio
+    Manejo de comandos
+        mod_autoindex
+        mod_reescribir
+    Notas al margen --- configuración por servidor, servidores virtuales, etc.
+    Soporte Litespeed Htaccess
+
+https://httpd.apache.org/docs/trunk/mod/directive-dict.html
+https://httpd.apache.org/docs/trunk/mod/directives.html
+https://httpd.apache.org/docs/trunk/mod/quickreference.html
